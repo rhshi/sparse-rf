@@ -1,6 +1,6 @@
 import numpy as np
-from dists import *
-from activations import *
+from .dists import *
+from .activations import *
 
 
 def make_X(d, m, dist=sphere):

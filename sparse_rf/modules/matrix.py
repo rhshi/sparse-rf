@@ -6,7 +6,7 @@ from sparse_rf.util import *
 def make_X(d, m, dist=sphere):
     return dist((m, d))
 
-def make_W(d, q, n, dist=normal, N=None):
+def make_W(d, q, n=1, dist=normal, N=None):
     if N is not None:
         W = np.zeros((N, d))
         i = 0

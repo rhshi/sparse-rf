@@ -5,7 +5,9 @@ setuptools.setup(
     install_requires=[
       'numpy',
       'spgl1',
-      'matplotlib'    
+      'matplotlib',
+      # 'jax',
+      # 'jaxlib==0.1.65+cuda110' 
     ],
     zip_safe=False,
 )

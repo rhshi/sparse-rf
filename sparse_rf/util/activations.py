@@ -5,3 +5,6 @@ def relu(x):
 
 def fourier(x):
     return np.concatenate((np.cos(x), np.sin(x)), axis=-1)
+
+def identity(x):
+    return x

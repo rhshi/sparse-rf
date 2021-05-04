@@ -52,3 +52,15 @@ def fn14(x):
 
 def fn15(x):
     return np.cos(np.dot(0.1 * np.ones(len(x)), x))
+
+def fn16(x):
+    return (1+np.linalg.norm(x)) ** (0.5)
+
+def fn17(x):
+    return (1+np.linalg.norm(x)) ** (-0.5)
+
+def fn18(x):
+    return np.sum(x) ** 2
+
+def fn19(x):
+    return np.sum(np.exp(-np.abs(x)))

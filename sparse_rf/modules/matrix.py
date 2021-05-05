@@ -31,5 +31,22 @@ def make_W(d, q, n=1, dist=normal, N=None):
 def make_A(X, W, active=relu):
     return active(np.matmul(X, W.T))
 
-    
+def make_K(X, kernel=rbf, X_test=None):
+    if X_test is None:
+        K = np.zeros((len(X), len(X)))
+        for i in range(len(X)):
+            for j in range(i+1):
+                val = kernel(X[i], X[j])
+                K[i, j] = val
+                K[j, i] = val
+    else:
+        assert X_test is not None
+        m = X_test.shape[0]
+        n = X.shape[0]
+        K = np.zeros((m, n))
+        for i in range(m):
+            for j in range(n):
+                K[i, j] = kernel(X_test[i], X[j])
+
+    return K
 

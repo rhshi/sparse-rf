@@ -1,6 +1,7 @@
 import numpy as np
 from itertools import combinations
 from sparse_rf.util.util import comb
+from sklearn.metrics.pairwise import rbf_kernel
 
 def relu(x):
     return np.maximum(0, x)
@@ -12,12 +13,12 @@ def identity(x):
     return x
 
 def rbf(x, y, scale=1):
-    return np.exp(-scale**2 * np.sum((x-y)**2) / 2)
+    return rbf_kernel(x, y, gamma=scale**2/2)
 
 def sparse_rbf(x, y, d, q, scale=1):
     inds = combinations(range(d), q)
     val = 0
     for ind in inds:
-        val += rbf(x[list(ind)], y[list(ind)], scale=scale)
+        val += rbf(x[:, list(ind)], y[:, list(ind)], scale=scale)
     
     return val / comb(d, q)

@@ -10,3 +10,4 @@ def min_l2(A, y):
 
 def min_wl2(A, y, D):
     return D@np.linalg.pinv(A@D)@y
+

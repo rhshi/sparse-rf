@@ -9,6 +9,9 @@ def relu(x):
 def fourier(x):
     return np.concatenate((np.cos(x), np.sin(x)), axis=-1)
 
+def exp(x):
+    return np.exp(1j * x)
+
 def cosine(x):
     return np.cos(x)
 

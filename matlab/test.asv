@@ -1,0 +1,36 @@
+
+data = importdata('airfoil_self_noise.dat');
+data = data(randperm(length(data)), :);
+
+ratio_train = 0.75;
+X = data(:, 1:size(data, 2)-1);
+y = data(:, size(data, 2));
+
+X_train = X(1:round(ratio_train*m)-1, :);
+X_test = X(round(ratio_train*m):m, :);
+y_train = y(1:round(ratio_train*m)-1);
+y_test = y(round(ratio_train*m):m);
+
+m = length(y);
+
+d = size(X, 2);
+q = 1;
+w_scale = 1/sqrt(q);
+N = 10000;
+n = round(N / nchoosek(d, q));
+
+[W, inds] = make_W(d, q, n, w_scale);
+A = make_A(X, W);
+
+A_train = A(1:round(ratio_train*m)-1, :);
+A_test = 
+
+
+% c_l1 = min_l1(A_train, y_train, 0);
+c_l2 = min_l2(A_train, y_train);
+
+% plot(c_l1);
+plot(c_l2);
+
+
+

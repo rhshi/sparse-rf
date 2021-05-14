@@ -1,4 +1,3 @@
-
 data = importdata('airfoil_self_noise.dat');
 data = data(randperm(length(data)), :);
 
@@ -27,17 +26,19 @@ n = round(N / nchoosek(d, q));
 A_train = make_A(X_train, W);
 A_test = make_A(X_test, W);
 
+group = [];
+for i = 1:2*length(inds)
+    for j = 1:n
+        group = [group, i];
+    end
+end
 
 % c_l1 = min_l1(A_train, y_train);
 c_l2 = min_l2(A_train, y_train);
+norm(A_test*c_l2-y_test) / norm(y_test)
 
-% plot(c_l1);
-plot(c_l2);
+c_bomp = BOMP(A_train, y_train, group, 4);
+norm(A_test*c_bomp-y_test) / norm(y_test)
 
-% err_l1 = norm(A_test*c_l1-y_test) / norm(y_test);
-err_l2 = norm(A_test*c_l2-y_test) / norm(y_test);
-
-% err_l1
-err_l2
 
 

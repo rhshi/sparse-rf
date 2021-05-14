@@ -1,5 +1,5 @@
-d = 3;
-q = 2;
+d = 5;
+q = 1;
 ratio_train = 0.7;
 w_scale = 1/sqrt(q);
 N = 10000;
@@ -10,7 +10,7 @@ X = make_X(d, m);
 y = zeros(m, 1);
 
 for i = 1:m
-    y(i, 1) = ishigami(X(i, :));
+    y(i, 1) = fn2(X(i, :));
 end
     
 X_train = X(1:round(ratio_train*m)-1, :);
@@ -24,13 +24,13 @@ A_train = make_A(X_train, W);
 A_test = make_A(X_test, W);
 
 group = [];
-for i = 1:length(inds)
+for i = 1:2*length(inds)
     for j = 1:n
         group = [group, i];
     end
 end
 
-[c_bomp, residual] = BOMP(A_train, y_train, group, 3);
-c_l2 = min_l2(A_train, y_train)
+[c_bomp, residual] = BOMP(A_train, y_train, group, 5);
+c_l2 = min_l2(A_train, y_train);
 norm(A_test* c_bomp - y_test) / norm(y_test)
-norm(A_test* c_bomp - y_test) / norm(y_test)
+norm(A_test* c_l2 - y_test) / norm(y_test)

@@ -29,19 +29,6 @@ n = round(N / nchoosek(d, q));
 A_train = make_A(X_train, W);
 A_test = make_A(X_test, W);
 
-
-% c_l1 = min_l1(A_train, y_train);
-% c_l2 = min_l2(A_train, y_train);
-% 
-% % plot(c_l1);
-% plot(c_l2);
-% 
-% % err_l1 = norm(A_test*c_l1-y_test) / norm(y_test);
-% err_l2 = norm(A_test*c_l2-y_test) / norm(y_test);
-% 
-% % err_l1
-% err_l2
-
 group = [];
 for i = 1:length(inds)
     for j = 1:n
@@ -56,38 +43,40 @@ tiledlayout(5,1)
 c_l2 = min_l2(A_train, y_train);
 errl2 = norm(A_test*c_l2-y_test) / norm(y_test)
 nexttile
-plot(1:length(c_l2), c_l2)
+scatter(1:length(c_l2), c_l2, 2)
 title(errl2 + " wine l2")
 
 % BOMP
-c_bomp = BOMP(A_train, y_train, group, 1);
+c_bomp = BOMP(A_train, y_train, group, 4);
 errbomp = norm(A_test*c_bomp-y_test) / norm(y_test)
 nexttile
-plot(1:length(c_l2), c_bomp)
+scatter(1:length(c_bomp), c_bomp, 2)
 title(errbomp + " wine bomp")
 
-% l1
-% c_l1 = min_l1(A_train, y_train);
-% errl1 = norm(A_test*c_l1-y_test) / norm(y_test)
-% nexttile
-% plot(c_l1)
-% title('wine l1' + errl1)
+%l1
+c_l1 = min_l1(A_train, y_train);
+errl1 = norm(A_test*c_l1-y_test) / norm(y_test)
+nexttile
+scatter(1:length(c_l1), c_l1, 2)
+title(errl1 + "wine l1")
 
+% pruning
 step = 39;
 per = 0.2;
-
 [w_len, mse_rec, list_rec, ww] = prune_total(A_train, A_test, y_train, y_test, step, per);
 
-id = find(mse_rec==min(mse_rec));
-n_best = w_len(id)
+min_mse = min(mse_rec)
+
+id = find(mse_rec==min_mse);
+n_best = w_len(id);
 nexttile
-plot(list_rec(int2str(n_best)), ww(int2str(n_best)))
-title("wine pruning: " + min(mse_rec) + ", nbest: " + n_best)
+scatter(list_rec(int2str(n_best)), ww(int2str(n_best)), 2)
+title("wine pruning: " + min_mse + ", nbest: " + n_best)
 
 nexttile
 loglog(w_len, mse_rec)
 hold on
-scatter(n_best, min(mse_rec))
+scatter(n_best, min_mse)
 title("wine mse ratio of pruning")
 hold off
 

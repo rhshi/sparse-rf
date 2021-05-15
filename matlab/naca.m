@@ -28,11 +28,12 @@ A_train = make_A(X_train, W);
 A_test = make_A(X_test, W);
 
 group = [];
-for i = 1:2*length(inds)
+for i = 1:length(inds)
     for j = 1:n
         group = [group, i];
     end
 end
+group = [group, group];
 
 
 

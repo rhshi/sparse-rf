@@ -6,6 +6,8 @@ ratio_train = 0.75;
 X = data(:, 1:size(data, 2)-1);
 y = data(:, size(data, 2));
 
+m = length(y);
+
 X_train = X(1:round(ratio_train*m)-1, :);
 X_test = X(round(ratio_train*m):m, :);
 y_train = y(1:round(ratio_train*m)-1);
@@ -14,7 +16,7 @@ y_test = y(round(ratio_train*m):m);
 [X_train, C, S] = normalize(X_train);
 X_test = normalize(X_test, 'center', C, 'scale', S);
 
-m = length(y);
+
 
 d = size(X, 2);
 q = 9;
@@ -41,11 +43,12 @@ A_test = make_A(X_test, W);
 % err_l2
 
 group = [];
-for i = 1:2*length(inds)
+for i = 1:length(inds)
     for j = 1:n
         group = [group, i];
     end
 end
+group = [group, group];
 
 tiledlayout(5,1)
 
@@ -57,7 +60,7 @@ plot(1:length(c_l2), c_l2)
 title(errl2 + " wine l2")
 
 % BOMP
-c_bomp = BOMP(A_train, y_train, group, 4);
+c_bomp = BOMP(A_train, y_train, group, 1);
 errbomp = norm(A_test*c_bomp-y_test) / norm(y_test)
 nexttile
 plot(1:length(c_l2), c_bomp)
@@ -70,6 +73,8 @@ title(errbomp + " wine bomp")
 % plot(c_l1)
 % title('wine l1' + errl1)
 
+step = 39;
+per = 0.2;
 
 [w_len, mse_rec, list_rec, ww] = prune_total(A_train, A_test, y_train, y_test, step, per);
 

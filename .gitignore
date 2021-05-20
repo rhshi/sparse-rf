@@ -5,3 +5,4 @@ __pycache__
 testing.ipynb
 *.png
 examples/airfoil_self_noise.dat:Zone.Identifier
+salsa

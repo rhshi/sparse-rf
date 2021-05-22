@@ -34,10 +34,10 @@ fprintf('Training with SHRIMP\n');
 
 %--setup parameters
 params = struct();
-params.per = 0.2;
+params.per = 0.5;
 params.numPartsKFoldCV = 10;
 params.orderCands = 1:5;
-params.step = 40;
+params.step = 50;
 params.N = 10000;
 
 
@@ -48,8 +48,8 @@ A_test = make_A(Xte, best_model("W"));
 A_test_prune = A_test(:, best_model("id_list"));
 y_pred = A_test_prune*best_model("w");
 pred_error = norm(y_pred - Yte).^2/nTe;
-fprintf('SHRIMP MSE: %.2e, Order chosen by Validation: %d with n_best: %d\n\n',...
-    pred_error, best_model("q"), best_model("n_best"));
+fprintf('SHRIMP MSE: %.2e with pruning rate %.2f, Order chosen by Validation: %d with n_best: %d\n\n',...
+    pred_error, params.per, best_model("q"), best_model("n_best"));
 toc,
 
 % run SALSA

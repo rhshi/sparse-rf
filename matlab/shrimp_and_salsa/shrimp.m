@@ -60,13 +60,13 @@ function best_model = shrimp(X, Y, params)
   best_model("min_val") = inf;
   best_model("W") = -1;
   best_model("q") = -1;
-  best_model("A_train") = 0;
+  best_model("w") = -1;
+%   best_model("A_train") = 0;
   
   for i = 1:numOrderCands
     q = orderCands(i);
     fprintf('Order: %d, ', q);
-    [A_train, W, ] = generate_m(X, q, params.N);
-%     size(A_train)
+    [A_train, W] = generate_m(X, q, params.N);
     [n_best, id_list, min_mse, w] = validate(A_train, Y, params.numPartsKFoldCV, params.step, params.per);
     if min_mse < best_model("min_val")
         best_model("n_best") = n_best;
@@ -91,7 +91,6 @@ end
 
 % Validation part
 function [n_best, id_list, min_mse, w] = validate(X, Y, numPartsKFoldCV, step, per)
-%   validErr = 0;
   m = size(X, 1);
   cvIter = 1;
   testStartIdx = round( (cvIter-1)*m/numPartsKFoldCV + 1);
@@ -108,8 +107,6 @@ function [n_best, id_list, min_mse, w] = validate(X, Y, numPartsKFoldCV, step, p
   [w_len, mse_rec, list_rec, ww] = shrimp_prune(Atr, Aval, Ytr, Yval, step, per);
   
    % get results
-%    w_len
-%    mse_rec
    min_mse = min(mse_rec);
    id = find(mse_rec==min_mse);
    n_best = w_len(id(1));

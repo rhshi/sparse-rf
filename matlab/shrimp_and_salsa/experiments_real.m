@@ -48,8 +48,8 @@ A_test = make_A(Xte, best_model("W"));
 A_test_prune = A_test(:, best_model("id_list"));
 y_pred = A_test_prune*best_model("w");
 pred_error = norm(y_pred - Yte).^2/nTe;
-fprintf('SHRIMP MSE: %.2e with pruning rate %d, Order chosen by Validation: %d with n_best: %d\n\n',...
-    pred_error, params.per*100, best_model("q"), best_model("n_best"));
+fprintf('SHRIMP MSE: %.2e with pruning rate %.2f, Order chosen by Validation: %d with n_best: %d\n\n',...
+    pred_error, params.per, best_model("q"), best_model("n_best"));
 toc,
 
 % run SALSA

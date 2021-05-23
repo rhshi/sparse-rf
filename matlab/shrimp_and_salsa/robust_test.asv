@@ -1,0 +1,36 @@
+function test_robust(data_list, per_list)
+
+for data = data_list
+    
+    [Xtr, Ytr, Xte, Yte] = getDataset(dataset);
+    [nTr, numDims] = size(Xtr);
+    nTe = size(Xte, 1);
+    fprintf('Dataset: %s (n, D) = (%d, %d)\n', dataset, nTr, numDims);
+    params.numPartsKFoldCV = 10;
+    params.orderCands = 1:10;
+    params.step = 50;
+    params.N = 10000;
+    
+    for per = per_list
+        
+    %--setup parameters
+    params = struct();
+    params.per = 0.2;
+
+
+
+tic,
+best_model = shrimp(Xtr, Ytr, params);
+%--test on test datasets
+A_test = make_A(Xte, best_model("W"));
+A_test_prune = A_test(:, best_model("id_list"));
+y_pred = A_test_prune*best_model("w");
+pred_error = norm(y_pred - Yte).^2/nTe;
+fprintf('SHRIMP MSE: %.2e with pruning rate %.2f;\n Order chosen by Validation: %d with n_best: %d\n\n',...
+    pred_error, params.per, best_model("q"), best_model("n_best"));
+toc,
+        
+    end
+
+end
+

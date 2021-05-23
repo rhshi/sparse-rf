@@ -5,15 +5,10 @@ function best_model = shrimp(X, Y, params)
 %   (X, Y): The training data and labels
 %   params: A structure which optionally contain the following hyper-parameters
 %     - numPartsKFoldCV: Number of partitions for K-Fold cross validation (CV).
-%     - numTrialsKFoldCV: Number of partitions to average the CV error over.
-%     - lambdaRange: A range within which the candidates for lambda will be selected
-%         with logarithmic spacing.
 %     - orderCands: Candidate values for the additive order.
 % Outputs:
-%   predFunc: A function handle which can be used to estimate the function for new
-%             points.
-%   addOrder: The order of the additive model chosen.
-%   We cross validate to choose the low order q and the resulting n_pruned.
+%   best model container
+%   We validate to choose the low order q and the resulting n_best.
 
   % prelims
   m = size(X, 1);
@@ -114,7 +109,8 @@ function [n_best, id_list, min_mse, w] = validate(X, Y, numPartsKFoldCV, step, p
    w = ww(int2str(n_best));
     
    fprintf('Valid-Err MSE: %.2e, n_best: %d\n', min_mse, n_best);
-    
+   
+   clear best_model;
 end
 
 
@@ -123,7 +119,7 @@ function [w_len, mse_record, list_rec, ww] = shrimp_prune(A_train, A_test, y_tra
     y_preds = A_test*w_prune;
     
     mse = norm(y_preds-y_test).^2/length(y_test);
-    mse_record = zeros(1, step+1);
+    mse_record = inf * ones(1, step+1);
     mse_record(1) = mse;
     
     w_len = -1 * ones(1, step+1);
@@ -138,6 +134,9 @@ function [w_len, mse_record, list_rec, ww] = shrimp_prune(A_train, A_test, y_tra
     ww(int2str(length(w_prune))) = w_prune;
     
     for i = 1:step
+        if length(w_prune) == 1
+            break
+        end
         [A_train, A_test, w_prune, mse, ind_list] = prune_os(w_prune, A_train, A_test, y_train, y_test, ind_list, per);
         w_len(i+1) = length(w_prune);
         mse_record(i+1) = mse;

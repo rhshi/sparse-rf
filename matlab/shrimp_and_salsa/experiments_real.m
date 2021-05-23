@@ -37,7 +37,7 @@ params = struct();
 params.per = 0.2;
 params.numPartsKFoldCV = 10;
 params.orderCands = 1:10;
-params.step = 40;
+params.step = 50;
 params.N = 10000;
 
 

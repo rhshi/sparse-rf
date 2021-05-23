@@ -15,7 +15,7 @@ for i = 1:length(data_list)
     params = struct();
     params.numPartsKFoldCV = 10;
     params.orderCands = 1:numDims;
-    params.step = 50;
+    params.step = 100;
     params.N = 10000;
     
     for j = 1:length(per_list)

@@ -1,8 +1,0 @@
-close all;
-clear all;
-clc;
-
-
-data_list = {'propulsion', 'galaxy', 'airfoil', 'speech', 'CCPP', ...,
-    'forestfires', 'housing', 'music', 'Insulin', 'skillcraft', 'telemonitoring-total', 'blog';}
-robust_test(data_list, per_list)

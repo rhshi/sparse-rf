@@ -36,11 +36,11 @@ function best_model = shrimp(X, Y, params)
   end
   
   if ~isfield(params, 'step')
-    params.step = 40;
+    params.step = 100;
   end
   
   if ~isfield(params, 'per')
-    params.per = 0.2;
+    params.per = 0.25;
   end
   
   % Copy over to workspace

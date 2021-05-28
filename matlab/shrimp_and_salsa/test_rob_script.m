@@ -3,13 +3,16 @@ clear all;
 clc;
 
 
-data_list = {'propulsion', 'galaxy', 'airfoil', 'speech', 'CCPP', ...
-    'forestfires', 'housing', 'music', 'Insulin', 'skillcraft', ...
-    'telemonitoring-total', 'blog'};
+% data_list = {'propulsion', 'galaxy', 'airfoil', 'speech', 'CCPP', ...
+%     'forestfires', 'housing', 'music', 'Insulin', 'skillcraft', ...
+%     'telemonitoring-total', 'blog'};
+
+data_list = {'speech'};
 
 % data_list = {'propulsion'};
-per_list =  [0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55];
-[mse_dict, q_dict] = robust_test(data_list, per_list);
+% per_list =  [0.1, 0.15, 0.2, 0.25, 0.3, 0.45, 0.4, 0.45, 0.5, 0.55, 0.6];
+per_list = [0.2, 0.3, 0.4];
+mse_dict = robust_test(data_list, per_list);
 
 % tiledlayout(3,4)
 % for i = 1:length(data_list)

@@ -56,11 +56,11 @@ function best_model = shrimp(X, Y, params)
   best_model("W") = -1;
   best_model("q") = -1;
   best_model("w") = -1;
-%   best_model("A_train") = 0;
+  best_model("A_train") = 0;
   
   for i = 1:numOrderCands
     q = orderCands(i);
-    fprintf('Order: %d, ', q);
+%     fprintf('Order: %d, ', q);
     [A_train, W] = generate_m(X, q, params.N);
     [n_best, id_list, min_mse, w] = validate(A_train, Y, params.numPartsKFoldCV, params.step, params.per);
     if min_mse < best_model("min_val")
@@ -70,16 +70,16 @@ function best_model = shrimp(X, Y, params)
         best_model("W") = W;
         best_model("q") = q;
         best_model("w") = w;
-%         best_model("A_train") = A_train;
+        best_model("A_train") = A_train;
     end      
   end
   
-%   A = best_model("A_train");
-%   A_train_final = A(:, best_model("id_list"));
-%   w = min_l2(A_train_final, Y);
-%   best_model("A_train") = 0;
+  A = best_model("A_train");
+  A_train_final = A(:, best_model("id_list"));
+  w = min_l2(A_train_final, Y);
+  best_model("A_train") = 0;
   
-%   best_model("w") = w;
+  best_model("w") = w;
 
 end
 
@@ -108,7 +108,7 @@ function [n_best, id_list, min_mse, w] = validate(X, Y, numPartsKFoldCV, step, p
    id_list = list_rec(int2str(n_best));
    w = ww(int2str(n_best));
     
-   fprintf('Valid-Err MSE: %.2e, n_best: %d\n', min_mse, n_best);
+%    fprintf('Valid-Err MSE: %.2e, n_best: %d\n', min_mse, n_best);
    
    clear best_model;
 end

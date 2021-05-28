@@ -4,7 +4,11 @@ mse_dict = containers.Map;
 q_dict = containers.Map;
 for i = 1:length(data_list)
     dataset = data_list{i};
-    [Xtr, Ytr, Xte, Yte] = getDataset(dataset);
+    if nargin == 2
+        [Xtr, Ytr, Xte, Yte] = getDataset(dataset);
+    else 
+        [Xtr, Ytr, Xte, Yte] = getDataset(dataset, d);
+    end
     [nTr, numDims] = size(Xtr);
     nTe = size(Xte, 1);
     mse_list = -1 * ones(1, length(per_list));

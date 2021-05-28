@@ -1,0 +1,118 @@
+fn11
+
+d=10
+
+q=1
+SHRIMP MSE: 5.35e-01 with n_bests: 94 5 2, averaged: 33.666667
+L1 MSE: 4.61e-01 with sparsity: 20000 20000 20000, averaged 20000.000000
+L2 MSE: 1.42e+01
+Kernel MSE: 2.05e+00
+
+q=2
+SHRIMP MSE: 8.54e-01 with n_bests: 12787 562 30, averaged: 4459.666667
+L1 MSE: 6.80e-01 with sparsity: 19980 19980 19980, averaged 19980.000000
+L2 MSE: 8.91e-01
+Kernel MSE: 8.22e-01
+
+q=3
+SHRIMP MSE: 4.92e-01 with n_bests: 287 3 38, averaged: 109.333333
+L1 MSE: 5.74e-01 with sparsity: 19920 19920 19920, averaged 19920.000000
+L2 MSE: 5.84e-01
+Kernel MSE: 5.69e-01
+
+q=4
+SHRIMP MSE: 4.72e-01 with n_bests: 887 2 1, averaged: 296.666667
+L1 MSE: 5.39e-01 with sparsity: 20160 20160 20160, averaged 20160.000000
+L2 MSE: 5.73e-01
+Kernel MSE: 5.58e-01
+
+q=5
+SHRIMP MSE: 5.14e-01 with n_bests: 568 186 10, averaged: 254.666667
+L1 MSE: 5.73e-01 with sparsity: 20160 20160 20160, averaged 20160.000000
+L2 MSE: 5.99e-01
+Kernel MSE: 5.66e-01
+
+q=10
+SHRIMP MSE: 5.11e-01 with n_bests: 8 94 2, averaged: 34.666667
+L1 MSE: 5.84e-01 with sparsity: 20000 20000 20000, averaged 20000.000000
+L2 MSE: 6.29e-01
+Kernel MSE: 6.29e-01
+
+d=100
+
+q=1
+SHRIMP MSE: 9.59e-01 with n_bests: 4 1 1, averaged: 2.000000
+L1 MSE: 1.41e+00 with sparsity: 20000 20000 20000, averaged 20000.000000
+L2 MSE: 7.74e+00
+Kernel MSE: 2.61e+00
+
+q=2
+SHRIMP MSE: 9.63e-01 with n_bests: 1 1 3, averaged: 1.666667
+L1 MSE: 1.69e+00 with sparsity: 19800 19800 19800, averaged 19800.000000
+L2 MSE: 1.69e+00
+Kernel MSE: 1.33e+00
+
+q=3
+SHRIMP MSE: 9.79e-01 with n_bests: 2 1 12, averaged: 5.000000
+L1 MSE: 1.72e+00 with sparsity: 20000 20000 20000, averaged 20000.000000
+L2 MSE: 1.72e+00
+Kernel MSE: 1.32e+00
+
+q=4
+SHRIMP MSE: 9.61e-01 with n_bests: 1 1 1, averaged: 1.000000
+L1 MSE: 1.69e+00 with sparsity: 20000 20000 20000, averaged 20000.000000
+L2 MSE: 1.70e+00
+Kernel MSE: 1.31e+00
+
+q=5
+SHRIMP MSE: 9.66e-01 with n_bests: 1 2 1, averaged: 1.333333
+L1 MSE: 1.63e+00 with sparsity: 20000 20000 20000, averaged 20000.000000
+L2 MSE: 1.63e+00
+Kernel MSE: 1.31e+00
+
+q=100
+SHRIMP MSE: 9.68e-01 with n_bests: 1 1 4, averaged: 2.000000
+L1 MSE: 1.40e+00 with sparsity: 20000 20000 20000, averaged 20000.000000
+L2 MSE: 1.40e+00
+Kernel MSE: 2.42e+04
+
+
+fn5
+
+d=10
+
+q=1
+SHRIMP MSE: 1.10e-01 with n_bests: 562 1718 360, averaged: 880.000000
+L1 MSE: 2.05e-02 with sparsity: 20000 20000 20000, averaged 20000.000000
+L2 MSE: 3.29e-01
+Kernel MSE: 5.43e-02
+
+q=2
+already done
+
+q=3
+SHRIMP MSE: 3.43e-02 with n_bests: 15 6 19, averaged: 13.333333
+L1 MSE: 5.85e-02 with sparsity: 19920 19920 19920, averaged 19920.000000
+L2 MSE: 8.02e-02
+Kernel MSE: 7.68e-02
+
+q=4
+SHRIMP MSE: 4.76e-02 with n_bests: 95 8 20, averaged: 41.000000
+L1 MSE: 6.20e-02 with sparsity: 20160 20160 20160, averaged 20160.000000
+L2 MSE: 7.88e-02
+Kernel MSE: 7.80e-02
+
+q=5
+SHRIMP MSE: 6.46e-02 with n_bests: 25 16 16, averaged: 19.000000
+L1 MSE: 7.29e-02 with sparsity: 20160 20160 20160, averaged 20160.000000
+L2 MSE: 8.43e-02
+Kernel MSE: 8.08e-02
+
+q=10
+already done
+
+
+d=100
+
+q=1
+

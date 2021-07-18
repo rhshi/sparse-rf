@@ -3,6 +3,8 @@ __pycache__
 *.ipynb:Zone.Identifier
 *.egg-info
 testing.ipynb
-# *.png
-examples/airfoil_self_noise.dat:Zone.Identifier
+*.png
 salsa
+examples
+matlab
+cite.txt

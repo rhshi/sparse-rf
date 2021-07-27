@@ -4,107 +4,103 @@ from sparse_rf.util import *
 import random
 from sparse_rf.algs.core import *
 import gc
+from namedlist import namedlist
 
-def prune(w, A_train, A_test, y_train, y_test, method, per=20):
-    thre = np.percentile(np.abs(w), per)
-    idx = np.abs(w) > thre
-    # output mse after pruninig--bad results
-    y_pred = A_test[:, idx] @ w[idx]
-    mse_prune = 1/len(y_test) * np.linalg.norm(y_pred - y_test)**2
-    # print(f"mse after prunining with threshold {thre}: {mse_prune}")
+BestModel = namedlist("BestModel", ["n_best", "id_list", "min_val", "W", "q", "w", "A_train", "inds_track"])
 
-    # retraining--IMP--good resultS
-    A_trains = A_train[:, idx]
-    A_tests = A_test[:, idx]
-    w_prune = method(A_trains, y_train)
-    y_preds = A_tests @ w_prune
-    mse_retrain = 1/len(y_test) * np.linalg.norm(y_preds - y_test)**2
-    print(f"mse after training with {w_prune.shape}")
+def generate_m(X, q, N):
+    d = X.shape[-1]
+    scale = 1/np.sqrt(q)
+    W, inds_track = make_W(d, q, N, scale=scale)
+    return make_A(X, W), W, inds_track
 
-    return A_trains, A_tests, w_prune, mse_prune, mse_retrain
+def shrimp(X, Y, numPartsKFoldCV=10, orderCands=list(range(1, 6)), N=10000, step=100, per=0.25, l=0):
+    m = X.shape[0]
+    shuffleOrder = np.random.permutation(m)
+    X = X[shuffleOrder, :]
+    Y = Y[shuffleOrder]
 
-def prune_total(A_train_sparse, A_test_sparse, y_train, y_test, c_l2_sparse, method, step=30, per=20):
-    A_trains, A_tests, w_prune = A_train_sparse, A_test_sparse, c_l2_sparse
-    mse_prune = []
-    mse_retrain = []
-    w_length = []
+    numOrderCands = len(orderCands)
+    bestmodel = BestModel(-1, -1, np.inf, -1, -1, -1, 0, -1)
+    for i in range(numOrderCands):
+        q = orderCands[i]
+        A_train, W, inds_track = generate_m(X, q, N)
+        n_best, id_list, min_mse, w = validate(A_train, Y, numPartsKFoldCV, step, per, l)
+        if min_mse < bestmodel.min_val:
+            bestmodel.inds_track = inds_track
+            bestmodel.n_best = n_best
+            bestmodel.id_list = id_list
+            bestmodel.min_val = min_mse
+            bestmodel.W = W
+            bestmodel.q = q
+            bestmodel.w = w
+            bestmodel.A_train = A_train
+
+    A = bestmodel.A_train
+    A_train_final = A[:, bestmodel.id_list]
+    w = l2(A_train_final, Y)
+    bestmodel.A_train = 0
+    bestmodel.w = w 
+
+    return bestmodel
+
+def validate(A, Y, numPartsKFoldCV, step, per, l):
+    m = A.shape[0]
+    cvIter = 1
+
+    testStartIdx = (cvIter-1)*m//numPartsKFoldCV
+    testEndIdx = cvIter*m//numPartsKFoldCV
+    trainIdxs = list(range(testStartIdx)) + list(range(testEndIdx, m))
+    testIdxs = list(range(testStartIdx, testEndIdx))
+    Atr = A[trainIdxs, :]
+    Aval = A[testIdxs, :]
+    Ytr = Y[trainIdxs]
+    Yval = Y[testIdxs]
+    
+    w_len, mse_rec, list_rec, ww = shrimp_prune(Atr, Aval, Ytr, Yval, step, per, l)
+    min_mse_id = np.argmin(mse_rec)
+    min_mse = mse_rec[min_mse_id]
+    n_best = w_len[min_mse_id]
+    id_list = list_rec[str(n_best)]
+    w = ww[str(n_best)]
+
+    return n_best, id_list, min_mse, w
+
+def shrimp_prune(A_train, A_test, y_train, y_test, step, per, l):
+    w_prune = l2(A_train, y_train, l=0)
+    y_preds = A_test@w_prune
+    mse = np.sum((y_test-y_preds)**2) / len(y_test)
+
+    w_len = [len(w_prune)]
+    mse_record = [mse]
+
+    ind_list = np.array(range(len(w_prune)))
+    list_rec = {str(len(w_prune)): ind_list}
+    ww = {str(len(w_prune)): w_prune}
 
     for i in range(step):
-        A_trains, A_tests, w_prune, msep, mser = prune(w_prune, A_trains, A_tests, y_train, y_test, method, per)
-        mse_prune.append(msep)
-        mse_retrain.append(mser)
-        w_length.append(w_prune.shape[0])
+        if len(w_prune) == 1:
+            break
+    
+        A_train, A_test, w_prune, mse, ind_list = prune_os(w_prune, A_train, A_test, y_train, y_test, ind_list, per)
+        w_len.append(len(w_prune))
+        mse_record.append(mse)
+        list_rec[str(len(w_prune))] = ind_list
+        ww[str(len(w_prune))] = w_prune
 
-    return w_length, mse_prune, mse_retrain
+    return w_len, mse_record, list_rec, ww
 
-# double descent curve plot with randomly sampled weights
-def reinit(X_train, X_test, y_train, y_test, d, q, method, w_length, active=fourier, dist=normal):
-    res_reinit = []
-     # new initialization
-    for wl in w_length:
-        W_sparse = make_W(d, q, N=wl//2, dist=dist)
-        A_train_sparse = make_A(X_train, W_sparse, active=active)
-        A_test_sparse = make_A(X_test, W_sparse, active=active)
-        # print(A_train_sparse.shape, wl)
+def prune_os(w, A_train, A_test, y_train, y_test, ind_list, per):
+    thre = np.quantile(np.abs(w), per)
+    idx = abs(w) > thre
+    new_list = ind_list[idx]  
+    a = np.array(range(len(w)))[idx]
 
-        c = method(A_train_sparse, y_train)
-        res = np.linalg.norm(A_test_sparse@c-y_test)**2 / len(y_test)
-        res_reinit.append(res)
-    return res_reinit 
+    A_trains = A_train[:, a]
+    A_tests = A_test[:, a]
+    w_prune = l2(A_trains, y_train)
+    y_preds = A_tests@w_prune
+    mse = np.sum((y_test-y_preds)**2) / len(y_test)
 
+    return A_trains, A_tests, w_prune, mse, new_list
 
-
-def test_perfomance(d, qs, N, m, func, ratio_train, seeds, dist=normal, active=fourier):
-    X = make_X(d, m, dist=uniform)
-    X_train = X[:int(m*ratio_train), :]
-    X_test = X[int(m*ratio_train):, :]
-
-    y = np.array(list(map(func, X)))
-    y_train = y[:int(m*ratio_train)]
-    y_test = y[int(m*ratio_train):]
-
-    results_l1 = []
-    results_l2 = []
-    prune_result = []
-    w_result = []
-    for q in qs:
-        res_l1 = []
-        res_l2 = []
-        res_prune = []
-        w_len = []
-        
-        for seed in seeds:
-            random.seed(seed)
-            np.random.seed(seed)
-
-            W = make_W(d, q, N=N, dist=normal)
-            A_train = make_A(X_train, W, active=active)
-            A_test = make_A(X_test, W, active=active)
-
-            c_l1 = min_l1(A_train, y_train)
-            c_l2 = min_l2(A_train, y_train)
-
-            res_l1.append(np.linalg.norm(A_test@c_l1 - y_test) / np.linalg.norm(y_test))
-            res_l2.append(np.linalg.norm(A_test@c_l2 - y_test) / np.linalg.norm(y_test))
-
-            w_length, mse_prune, mse_retrain = prune_total(A_train, A_test, y_train, y_test, c_l2, method=min_l2, step=30, per=20)
-            idx = np.argmin(mse_retrain)
-            res_prune.append(mse_retrain[idx])
-            w_len.append(w_length[idx])
-
-
-            del W
-            del A_train
-            del A_test
-            del c_l1
-            del c_l2
-
-            gc.collect()
-
-        results_l1.append(res_l1)
-        results_l2.append(res_l2)
-        prune_result.append(res_prune)
-        w_result.append(w_len)
-
-
-    return X_train, X_test, y_train, y_test, results_l1, results_l2, prune_result, w_result, w_length

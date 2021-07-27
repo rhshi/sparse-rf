@@ -73,3 +73,6 @@ def fn21(x):
 
 def fn22(x):
     return np.sin(x[0]) ** 2
+
+def fn23(x):
+    return np.cos(x[0]) + np.sin(x[1])

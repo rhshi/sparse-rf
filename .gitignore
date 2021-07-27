@@ -2,9 +2,9 @@
 __pycache__
 *.ipynb:Zone.Identifier
 *.egg-info
+*/testing.ipynb
 testing.ipynb
 *.png
 salsa
-examples
 matlab
-cite.txt
+*.txt

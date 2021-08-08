@@ -69,10 +69,13 @@ def fn20(x):
     return np.cos(x[0] * x[1] * x[2])
 
 def fn21(x):
-    return np.sin(x[0]) + 7 * np.sin(x[1]) ** 2 + 0.1 * x[2] ** 4 * np.sin(x[0]) \
+    return np.sin(x[0]) + 7 * np.sin(x[1]) ** 2 + 0.1 * x[2] ** 4 * np.sin(x[0])
 
 def fn22(x):
     return np.sin(x[0]) ** 2
 
 def fn23(x):
     return np.cos(x[0]) + np.sin(x[1])
+
+def fn24(x):
+    return np.cos(x[0]) * x[2] + x[1]**2 * x[3] + np.sum(x[2:])

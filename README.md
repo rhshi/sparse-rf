@@ -4,4 +4,8 @@ This repository is the official implementation of "SHRIMP: Sparse Random Feature
 
 ## Installation
 
-* Please run ```pip install -e .``` in the top level directory for installation
+Please run ```pip install -e .``` in the top level directory for installation
+
+## Running the model
+
+Please see the [Examples](examples) folder for notebooks on various examples.

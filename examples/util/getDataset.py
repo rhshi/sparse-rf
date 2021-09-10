@@ -1,8 +1,9 @@
 import numpy as np
+from sparse_rf.util import *
 from sparse_rf.algs import make_X
 from scipy.io import loadmat
 
-def getDataset(dataset, d=10, m=1000, train_ratio=0.7, noise=0):
+def getDataset(dataset, d=10, m=1000, train_ratio=0.7, noise=0, dist=uniform):
     if isinstance(dataset, str):
         if dataset == "speech":
             L = np.loadtxt("./datasets/parkinson21.txt", delimiter=",")
@@ -122,7 +123,7 @@ def getDataset(dataset, d=10, m=1000, train_ratio=0.7, noise=0):
             Xtr, Ytr, Xte, Yte = partitionData(L, attrs, label, trIdxs, teIdxs)
 
     elif callable(dataset):
-        X = make_X(d, m)
+        X = make_X(d, m, dist=dist)
         Y = array_map(dataset, X) + noise * np.random.randn(m)
         Xtr = X[:int(m*train_ratio), :]
         Xte = X[int(m*train_ratio):, :]

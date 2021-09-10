@@ -37,9 +37,8 @@ def make_W(d, q, N, dist=normal, scale=1):
 def make_A(X, W, active=fourier):
     temp = active(np.matmul(X, W.T))
     if active == fourier:
-        return temp / np.sqrt(temp.shape[-1]/2)
-    else:
-        return temp
+        temp = temp / np.sqrt(temp.shape[-1]/2)
+    return temp
 
 def make_K(X, kernel=rbf, X_test=None):
     if X_test is None:

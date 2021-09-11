@@ -7,9 +7,9 @@ from sparse_rf.util import *
 def make_X(d, m, dist=uniform):
     return dist((m, d))
 
-def make_W(d, q, N, dist=normal, scale=1):
+def make_W(d, q, N, dist=normal, scale=1, sample=False):
     num_supports = comb(d, q)
-    if num_supports > N:
+    if num_supports > N and not sample:
         W = np.zeros((N, d))
         inds_track = None
         i = 0

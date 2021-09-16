@@ -78,7 +78,7 @@ def validate(A, Y, numPartsKFoldCV, step, per, l, random, verbose):
     return n_best, id_list, min_mse, w, thresh, mse_rec, train_mses, w_len
 
 def shrimp_prune(A_train, A_test, y_train, y_test, step, per, l, random, verbose):
-    w_prune = l2(A_train, y_train, l=0)
+    w_prune = l2(A_train, y_train, l=l)
     y_preds = A_test@w_prune
     train_mse = np.sum((y_train-A_train@w_prune)**2) / len(y_train)
     mse = np.sum((y_test-y_preds)**2) / len(y_test)

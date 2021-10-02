@@ -9,3 +9,4 @@ testing.ipynb
 salsa
 matlab
 *.txt
+*.ipynb_checkpoints

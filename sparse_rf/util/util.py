@@ -24,6 +24,9 @@ def sine(x):
 def identity(x):
     return x
 
+def tanh(x):
+    return np.tanh(x)
+
 def rbf(x, y, scale=1):
     return rbf_kernel(x, y, gamma=scale**2/2)
 
@@ -34,3 +37,11 @@ def sparse_rbf(x, y, d, q, scale=1):
         val += rbf(x[:, list(ind)], y[:, list(ind)], scale=scale)
     
     return val / comb(d, q)
+
+def coherence(A):
+    A /= np.linalg.norm(A, axis=0)
+    inners = []
+    for i in range(A.shape[-1]):
+        inners.extend(list(A[:, i]@A[:, i+1:]))
+
+    return np.abs(inners)

@@ -3,6 +3,7 @@ __pycache__
 *.ipynb:Zone.Identifier
 *.egg-info
 */testing.ipynb
+*/testing2.ipynb
 testing.ipynb
 *.png
 salsa

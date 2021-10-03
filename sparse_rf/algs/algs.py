@@ -149,7 +149,10 @@ def prune_os(w, A_train, A_test, y_train, y_test, ind_list, per, random, l, verb
     train_mse = np.sum((y_train-A_trains@w_prune)**2) / len(y_train)
     val_mse = np.sum((y_test-y_preds)**2) / len(y_test)
 
-    eigs_ = np.sort(np.real(np.linalg.eigvals(A_trains@A_trains.T)))
+    if A_trains.shape[0] < A_trains.shape[1]:
+        eigs_ = np.sort(np.real(np.linalg.eigvals(A_trains@A_trains.T)))
+    else:
+        eigs_ = np.sort(np.real(np.linalg.eigvals(A_trains.T@A_trains)))
     eig = (eigs_[0], eigs_[-1])
     
 

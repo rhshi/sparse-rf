@@ -141,7 +141,10 @@ def growth(trials, Xtr, Ytr, Xte, Yte, N_, q, l, inter=1):
             g_train_mses.append(np.sum(Ytr1-Atr1@cg)**2/len(Ytr1))
             g_val_mses.append(val)
 
-            eigs_ = np.sort(np.real(np.linalg.eigvals(Atr1@Atr1.T)))
+            if Atr1.shape[0] < Atr1.shape[1]:
+                eigs_ = np.sort(np.real(np.linalg.eigvals(Atr1@Atr1.T)))
+            else:
+                eigs_ = np.sort(np.real(np.linalg.eigvals(Atr1.T@Atr1)))
             eigs_min.append(eigs_[0])
             eigs_max.append(eigs_[1])
 

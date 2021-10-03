@@ -79,3 +79,9 @@ def fn23(x):
 
 def fn24(x):
     return np.cos(x[0]) * x[2] + x[1]**2 * x[3] + np.sum(x[2:])
+
+def fn25(x):
+    s = 0
+    for i in range(len(x)-1):
+        s += x[i] * x[i+1]
+    return s

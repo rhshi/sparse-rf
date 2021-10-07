@@ -94,7 +94,7 @@ def shrimp_v_random(trials, Xtr, Ytr, Xte, Yte, q, N, l, scale=None, verbose=0):
     n_best_s = np.mean(n_bests_s)
     n_best_r = np.mean(n_bests_r)
 
-    return shrimp_v_random_(lengths, err_l2, err_shrimp, err_r, thresh_l, thresh_u, train_mse_s, train_mse_r, val_mse_s, val_mse_r, eigs_s_min, eigs_s_max, eigs_r_min, eigs_r_max, n_best_s, n_best_r)
+    return shrimp_v_random_(lengths, err_l2, err_shrimp, err_r, thresh_l, thresh_u, train_mse_s, val_mse_s, train_mse_r, val_mse_r, eigs_s_min, eigs_s_max, eigs_r_min, eigs_r_max, n_best_s, n_best_r)
 
 growth_ = namedtuple("growth_", 
     [

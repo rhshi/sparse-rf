@@ -20,3 +20,10 @@ def fn6(x):
 
 def fn7(x):
     return np.cos(x[0]) * x[2] + x[1]**2 * x[3] + np.sum(x[2:])
+
+def fn8(x, r1, r2, r3, r4):
+    return np.cos(r1*x[0]+r2*x[1]) + 3 * np.cos(r3*x[2]+r4*x[3])
+    
+def fn9(x, r):
+    return np.cos(x[0]) + r*np.cos(r*x[1])
+

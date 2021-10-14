@@ -10,3 +10,4 @@ salsa
 matlab
 *.txt
 *.ipynb_checkpoints
+plots

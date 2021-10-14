@@ -85,3 +85,6 @@ def fn25(x):
     for i in range(len(x)-1):
         s += x[i] * x[i+1]
     return s
+
+def fn26(x):
+    return 3 * np.cos(x[2]) + 4 * np.sin(x[3]) + 2*np.sin(x[1])

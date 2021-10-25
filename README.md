@@ -1,6 +1,6 @@
-# SHRIMP: Sparse Random Feature Models with Iterative Magnitude Pruning
+# SHRIMP: Sparser Random Feature Models via Iterative Magnitude Pruning
 
-This repository is the official implementation of "SHRIMP: Sparse Random Feature Models with Iterative Magnitude Pruning."
+This repository is the official implementation of "SHRIMP: Sparser Random Feature Models via Iterative Magnitude Pruning."
 
 ## Installation
 

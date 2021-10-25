@@ -8,4 +8,4 @@ Please run ```pip install -e .``` in the top level directory for installation
 
 ## Running the model
 
-Please see the [Examples](examples) folder for notebooks on various examples.
+Please see the [examples](examples) folder for notebooks on various examples.
